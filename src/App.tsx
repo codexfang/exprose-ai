@@ -1,61 +1,76 @@
 import { useState } from 'react'
-import { Calculator } from './components/Calculator'
-import { Graph } from './components/Graph'
+import { evaluateExpression, generatePlotPoints, type PlotPoint } from './lib/math'
+import { GraphCard } from './components/GraphCard'
+import { Header } from './components/Header'
+import { InputCard } from './components/InputCard'
+import { ResultCard } from './components/ResultCard'
 
-type Tab = 'calculator' | 'graph'
+type PlotData = { points: PlotPoint[]; label: string }
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>('calculator')
+  const [expression, setExpression] = useState('')
+  const [equation, setEquation] = useState('')
+  const [result, setResult] = useState<string | null>(null)
+  const [plot, setPlot] = useState<PlotData | null>(null)
+  const [calcError, setCalcError] = useState<string | null>(null)
+  const [graphError, setGraphError] = useState<string | null>(null)
+
+  function handleSolve() {
+    try {
+      const value = evaluateExpression(expression)
+      setResult(String(value))
+      setCalcError(null)
+    } catch (err) {
+      setResult(null)
+      setCalcError(
+        err instanceof Error ? err.message : 'Calculation failed.',
+      )
+    }
+  }
+
+  function handlePlot() {
+    try {
+      const points = generatePlotPoints(equation)
+      setPlot({ points, label: equation.trim() || 'f(x)' })
+      setGraphError(null)
+    } catch (err) {
+      setPlot(null)
+      setGraphError(
+        err instanceof Error ? err.message : 'Could not plot equation.',
+      )
+    }
+  }
+
+  function handleClear() {
+    setExpression('')
+    setEquation('')
+    setResult(null)
+    setPlot(null)
+    setCalcError(null)
+    setGraphError(null)
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-indigo-50 to-slate-100 px-6 py-10 sm:px-10">
-      <main className="w-full max-w-4xl">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            Exprose AI
-          </h1>
-          <p className="mx-auto mt-3 max-w-xl text-base text-slate-600 sm:text-lg">
-            Calculate math expressions and graph equations instantly in your
-            browser.
-          </p>
-        </header>
+    <div className="min-h-screen bg-slate-50">
+      <Header />
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/50">
-          <nav
-            className="grid grid-cols-2 border-b border-slate-100"
-            role="tablist"
-            aria-label="Main"
-          >
-            <button
-              type="button"
-              role="tab"
-              aria-selected={tab === 'calculator'}
-              onClick={() => setTab('calculator')}
-              className={`px-6 py-4 text-base font-semibold transition ${
-                tab === 'calculator'
-                  ? 'border-b-2 border-indigo-600 bg-indigo-50/80 text-indigo-700'
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-              }`}
-            >
-              Calculator
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={tab === 'graph'}
-              onClick={() => setTab('graph')}
-              className={`px-6 py-4 text-base font-semibold transition ${
-                tab === 'graph'
-                  ? 'border-b-2 border-indigo-600 bg-indigo-50/80 text-indigo-700'
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-              }`}
-            >
-              Graph
-            </button>
-          </nav>
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+          <InputCard
+            expression={expression}
+            equation={equation}
+            calcError={calcError}
+            graphError={graphError}
+            onExpressionChange={setExpression}
+            onEquationChange={setEquation}
+            onSolve={handleSolve}
+            onPlot={handlePlot}
+            onClear={handleClear}
+          />
 
-          <div className="p-8 sm:p-10" role="tabpanel">
-            {tab === 'calculator' ? <Calculator /> : <Graph />}
+          <div className="flex flex-col gap-6 lg:gap-8">
+            <ResultCard result={result} />
+            <GraphCard plot={plot} />
           </div>
         </div>
       </main>
