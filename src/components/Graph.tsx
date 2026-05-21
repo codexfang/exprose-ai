@@ -63,9 +63,9 @@ export function Graph() {
     : null
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <label className="block">
-        <span className="mb-2 block text-sm font-medium text-slate-600">
+        <span className="mb-3 block text-base font-medium text-slate-600">
           Equation
         </span>
         <input
@@ -74,17 +74,17 @@ export function Graph() {
           onChange={(e) => setEquation(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handlePlot()}
           placeholder="y = x^2"
-          className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+          className="w-full rounded-xl border border-slate-200 bg-white px-5 py-4 text-lg text-slate-900 shadow-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
         />
       </label>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-3">
         {EXAMPLES.map((example) => (
           <button
             key={example}
             type="button"
             onClick={() => setEquation(example)}
-            className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700"
+            className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-base text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-700"
           >
             {example}
           </button>
@@ -94,19 +94,19 @@ export function Graph() {
       <button
         type="button"
         onClick={handlePlot}
-        className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2"
+        className="w-full rounded-xl bg-indigo-600 px-5 py-4 text-lg font-medium text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2"
       >
         Plot
       </button>
 
       {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-base text-red-700">
           {error}
         </p>
       )}
 
       {chartData && !error && (
-        <div className="h-72 w-full rounded-lg border border-slate-100 bg-white p-2 sm:h-80">
+        <div className="h-96 w-full rounded-xl border border-slate-100 bg-white p-4 sm:h-[28rem]">
           <Line
             data={chartData}
             options={{
@@ -132,7 +132,7 @@ export function Graph() {
         </div>
       )}
 
-      <p className="text-center text-xs text-slate-400">
+      <p className="text-center text-sm text-slate-400">
         x range: −10 to 10 · supports ^, sin, cos, tan, and linear terms
       </p>
     </div>

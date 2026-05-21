@@ -1,6 +1,6 @@
-# Exprose Solve
+# Expose-AI
 
-A fully static React + Vite app for quick math calculations and equation graphing. Deployable to GitHub Pages with no backend.
+Calculate math expressions and graph equations instantly in your browser.
 
 **Live site:** [https://codexfang.github.io/exprose-solve](https://codexfang.github.io/exprose-solve)
 
