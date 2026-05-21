@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy:clean": "gh-pages-clean"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
